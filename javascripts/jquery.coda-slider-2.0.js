@@ -90,7 +90,7 @@ $.fn.codaSlider = function(settings) {
 				offset = - (panelWidth*(currentPanel - 1));
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parent().prev().find('a').addClass('current');
 			};
-			$('.panel-container', slider).animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
+			$('.panel-container', slider).stop().animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
 			if (settings.crossLinking) { location.hash = currentPanel }; // Change the URL hash (cross-linking)
 			return false;
 		});
@@ -109,7 +109,7 @@ $.fn.codaSlider = function(settings) {
 				currentPanel += 1;
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parent().next().find('a').addClass('current');
 			};
-			$('.panel-container', slider).animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
+			$('.panel-container', slider).stop().animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
 			if (settings.crossLinking) { location.hash = currentPanel }; // Change the URL hash (cross-linking)
 			return false;
 		});
@@ -151,7 +151,7 @@ $.fn.codaSlider = function(settings) {
 				offset = - (panelWidth*z);
 				alterPanelHeight(z);
 				currentPanel = z + 1;
-				$('.panel-container', slider).animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
+				$('.panel-container', slider).stop().animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
 				if (!settings.crossLinking) { return false }; // Don't change the URL hash unless cross-linking is specified
 			});
 		});
@@ -169,7 +169,7 @@ $.fn.codaSlider = function(settings) {
 					// Switch the current tab:
 					slider.siblings('.coda-nav').find('a').removeClass('current').parents('ul').find('li:eq(' + (targetPanel - 1) + ') a').addClass('current');
 					// Slide
-					$('.panel-container', slider).animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
+					$('.panel-container', slider).stop().animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
 					if (!settings.crossLinking) { return false }; // Don't change the URL hash unless cross-linking is specified
 				});
 			};
@@ -202,7 +202,7 @@ $.fn.codaSlider = function(settings) {
 		function alterPanelHeight(x) {
 			if (settings.autoHeight) {
 				panelHeight = $('.panel:eq(' + x + ')', slider).height()
-				slider.animate({ height: panelHeight }, settings.autoHeightEaseDuration, settings.autoHeightEaseFunction);
+				slider.stop().animate({ height: panelHeight }, settings.autoHeightEaseDuration, settings.autoHeightEaseFunction);
 			};
 		};
 		
@@ -219,7 +219,7 @@ $.fn.codaSlider = function(settings) {
 				// Switch the current tab:
 				slider.siblings('.coda-nav').find('a').removeClass('current').parents('ul').find('li:eq(' + (currentPanel - 1) + ') a').addClass('current');
 				// Slide:
-				$('.panel-container', slider).animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
+				$('.panel-container', slider).stop().animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction);
 				setTimeout(autoSlide,settings.autoSlideInterval);
 			};
 		};
