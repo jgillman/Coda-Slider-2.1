@@ -44,7 +44,13 @@ $.fn.codaSlider = function(settings) {
 		// Uncomment the line below to test your preloader
 		// alert("Testing preloader");
 		
-		var slider = $(this);
+		var slider = $(this),
+		panelWidth = slider.find(".panel").width(),
+		panelCount = slider.find(".panel").size(),
+		panelContainerWidth = (settings.carousel) ? panelWidth*(panelCount+1): panelWidth*panelCount,
+		navClicks = 0, // Used if autoSlideStopWhenClicked = true
+		last = false, // Used in carousel mode
+		currentPanel, offset, dynamicTabs;
 		
 		// If we need arrows
 		if (settings.dynamicArrows) {
@@ -52,12 +58,6 @@ $.fn.codaSlider = function(settings) {
 			slider.before('<div class="coda-nav-left" id="coda-nav-left-' + sliderCount + '"><a href="#">' + settings.dynamicArrowLeftText + '</a></div>');
 			slider.after('<div class="coda-nav-right" id="coda-nav-right-' + sliderCount + '"><a href="#">' + settings.dynamicArrowRightText + '</a></div>');
 		};
-		
-		var panelWidth = slider.find(".panel").width();
-		var panelCount = slider.find(".panel").size();
-		var panelContainerWidth = (settings.carousel) ? panelWidth*(panelCount+1): panelWidth*panelCount;
-		var navClicks = 0; // Used if autoSlideStopWhenClicked = true
-		var last = false; // Used in carousel mode
 		
 		// Surround the collection of panel divs with a container div (wide enough for all panels to be lined up end-to-end)
 		$('.panel', slider).wrapAll('<div class="panel-container"></div>');
@@ -67,17 +67,17 @@ $.fn.codaSlider = function(settings) {
 		// Specify the current panel.
 		// If the loaded URL has a hash (cross-linking), we're going to use that hash to give the slider a specific starting position...
 		if (settings.crossLinking && location.hash && parseInt(location.hash.slice(1)) <= panelCount) {
-			var currentPanel = parseInt(location.hash.slice(1));
-			var offset = - (panelWidth*(currentPanel - 1));
 			$('.panel-container', slider).css({ marginLeft: offset });
+			currentPanel = parseInt(location.hash.slice(1));
+			offset = - (panelWidth*(currentPanel - 1));
 		// If that's not the case, check to see if we're supposed to load a panel other than Panel 1 initially...
 		} else if (settings.firstPanelToLoad != 1 && settings.firstPanelToLoad <= panelCount) { 
-			var currentPanel = settings.firstPanelToLoad;
-			var offset = - (panelWidth*(currentPanel - 1));
 			$('.panel-container', slider).css({ marginLeft: offset });
+			currentPanel = settings.firstPanelToLoad;
+			offset = - (panelWidth*(currentPanel - 1));
 		// Otherwise, we'll just set the current panel to 1...
 		} else { 
-			var currentPanel = 1;
+			currentPanel = 1;
 		};
 			
 		// Left arrow click
@@ -236,12 +236,14 @@ $.fn.codaSlider = function(settings) {
 		};
 		
 		function autoSlide() {
+			var offset;
+			
 			if (navClicks == 0 || !settings.autoSlideStopWhenClicked) {
 				if (currentPanel == panelCount) {
-					var offset = 0;
+					offset = 0;
 					currentPanel = 1;
 				} else {
-					var offset = - (panelWidth*currentPanel);
+					offset = - (panelWidth*currentPanel);
 					currentPanel += 1;
 				};
 				alterPanelHeight(currentPanel - 1);
