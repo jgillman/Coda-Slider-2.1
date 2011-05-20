@@ -2,6 +2,8 @@
 	jQuery Coda-Slider v2.0 - http://www.ndoherty.biz/coda-slider
 	Copyright (c) 2009 Niall Doherty
 	This plugin available for use in all personal or commercial projects under both MIT and GPL licenses.
+	
+	'Circular' sliding added by Joel Gillman - http://joelgillman.com/
 */
 
 $(function(){
@@ -22,10 +24,11 @@ $.fn.codaSlider = function(settings) {
 		autoSlide: false,
 		autoSlideInterval: 7000,
 		autoSlideStopWhenClicked: true,
+		circular: false,
 		crossLinking: true,
 		dynamicArrows: true,
-		dynamicArrowLeftText: "&#171; left",
-		dynamicArrowRightText: "right &#187;",
+		dynamicArrowLeftText: "« left",
+		dynamicArrowRightText: "right »",
 		dynamicTabs: true,
 		dynamicTabsAlign: "center",
 		dynamicTabsPosition: "top",
@@ -79,11 +82,14 @@ $.fn.codaSlider = function(settings) {
 		// Left arrow click
 		$("#coda-nav-left-" + sliderCount + " a").click(function(){
 			navClicks++;
-			if (currentPanel == 1) {
+			if (currentPanel == 1 && !settings.circular) {
+				console.log("going to the begining");
 				offset = - (panelWidth*(panelCount - 1));
 				alterPanelHeight(panelCount - 1);
 				currentPanel = panelCount;
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parents('ul').find('li:last a').addClass('current');
+			} else if (currentPanel == 1 && settings.circular) {
+				console.log("going to the begining and circular is true");
 			} else {
 				currentPanel -= 1;
 				alterPanelHeight(currentPanel - 1);
@@ -98,11 +104,14 @@ $.fn.codaSlider = function(settings) {
 		// Right arrow click
 		$('#coda-nav-right-' + sliderCount + ' a').click(function(){
 			navClicks++;
-			if (currentPanel == panelCount) {
+			if (currentPanel == panelCount && !settings.circular) {
+				console.log("going to the end");
 				offset = 0;
 				currentPanel = 1;
 				alterPanelHeight(0);
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parents('ul').find('a:eq(0)').addClass('current');
+			} else if (currentPanel == panelCount && settings.circular) {
+				console.log("going to the end and circular is true");
 			} else {
 				offset = - (panelWidth*currentPanel);
 				alterPanelHeight(currentPanel);
