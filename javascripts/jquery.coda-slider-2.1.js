@@ -3,7 +3,7 @@
 	Copyright (c) 2009 Niall Doherty
 	This plugin available for use in all personal or commercial projects under both MIT and GPL licenses.
 	
-	'Circular' sliding added by Joel Gillman - http://joelgillman.com/
+	'Carousel' sliding added by Joel Gillman - http://joelgillman.com/
 */
 
 $(function(){
@@ -24,7 +24,7 @@ $.fn.codaSlider = function(settings) {
 		autoSlide: false,
 		autoSlideInterval: 7000,
 		autoSlideStopWhenClicked: true,
-		circular: false,
+		carousel: false,
 		crossLinking: true,
 		dynamicArrows: true,
 		dynamicArrowLeftText: "« left",
@@ -55,9 +55,9 @@ $.fn.codaSlider = function(settings) {
 		
 		var panelWidth = slider.find(".panel").width();
 		var panelCount = slider.find(".panel").size();
-		var panelContainerWidth = (settings.circular) ? panelWidth*(panelCount+1): panelWidth*panelCount;
+		var panelContainerWidth = (settings.carousel) ? panelWidth*(panelCount+1): panelWidth*panelCount;
 		var navClicks = 0; // Used if autoSlideStopWhenClicked = true
-		var last = false; // Used in circular mode
+		var last = false; // Used in carousel mode
 		
 		// Surround the collection of panel divs with a container div (wide enough for all panels to be lined up end-to-end)
 		$('.panel', slider).wrapAll('<div class="panel-container"></div>');
@@ -83,12 +83,12 @@ $.fn.codaSlider = function(settings) {
 		// Left arrow click
 		$("#coda-nav-left-" + sliderCount + " a").click(function(){
 			navClicks++;
-			if (currentPanel == 1 && !settings.circular) {
+			if (currentPanel == 1 && !settings.carousel) {
 				offset = - (panelWidth*(panelCount - 1));
 				alterPanelHeight(panelCount - 1);
 				currentPanel = panelCount;
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parents('ul').find('li:last a').addClass('current');
-			} else if (currentPanel == 1 && settings.circular) {
+			} else if (currentPanel == 1 && settings.carousel) {
 				last = true;
 				offset = 0;
 				alterPanelHeight(panelCount - 1);
@@ -103,7 +103,7 @@ $.fn.codaSlider = function(settings) {
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parent().prev().find('a').addClass('current');
 			};
 			$('.panel-container', slider).stop().animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction, function() {
-				if (settings.circular && last) {
+				if (settings.carousel && last) {
 					last = false;
 					$(this).css( "marginLeft", -(panelWidth*(panelCount - 1)) ).find('.panel.duplicate').remove();
 				}
@@ -115,12 +115,12 @@ $.fn.codaSlider = function(settings) {
 		// Right arrow click
 		$('#coda-nav-right-' + sliderCount + ' a').click(function(){
 			navClicks++;
-			if (currentPanel == panelCount && !settings.circular) {
+			if (currentPanel == panelCount && !settings.carousel) {
 				offset = 0;
 				currentPanel = 1;
 				alterPanelHeight(0);
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parents('ul').find('a:eq(0)').addClass('current');
-			} else if (currentPanel == panelCount && settings.circular) {
+			} else if (currentPanel == panelCount && settings.carousel) {
 				last = true;
 				offset = - (panelWidth*panelCount);
 				currentPanel = 1;
@@ -134,7 +134,7 @@ $.fn.codaSlider = function(settings) {
 				slider.siblings('.coda-nav').find('a.current').removeClass('current').parent().next().find('a').addClass('current');
 			};
 			$('.panel-container', slider).stop().animate({ marginLeft: offset }, settings.slideEaseDuration, settings.slideEaseFunction, function() {
-				if (settings.circular && last) {
+				if (settings.carousel && last) {
 					last = false;
 					$(this).css( "marginLeft", (panelWidth*(currentPanel-1)) ).find('.panel.duplicate').remove();
 				}

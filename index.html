@@ -4,7 +4,7 @@
 
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-	<title>Coda-Slider 2.0</title>
+	<title>Coda-Slider 2.1 (with carousel sliding)</title>
 	<meta http-equiv="Content-Language" content="en-us" />
 	
 	<meta name="author" content="Niall Doherty" />
@@ -17,10 +17,12 @@
 	<!-- Begin JavaScript -->
 		<script type="text/javascript" src="javascripts/jquery-1.6.1.min.js"></script>
 		<script type="text/javascript" src="javascripts/jquery.easing.1.3.js"></script>
-		<script type="text/javascript" src="javascripts/jquery.coda-slider-2.0.js"></script>
+		<script type="text/javascript" src="javascripts/jquery.coda-slider-2.1.js"></script>
 		 <script type="text/javascript">
 			$().ready(function() {
-				$('#coda-slider-1').codaSlider();
+				$('#coda-slider-1').codaSlider({
+					carousel: true
+				});
 			});
 		 </script>
 	<!-- End JavaScript -->
@@ -29,7 +31,7 @@
 
 <body class="coda-slider-no-js">
 
-<h1>Coda-Slider 2.0</h1>
+<h1>Coda-Slider 2.1 (with carousel sliding)</h1>
 	
 <noscript>
 	<div>
