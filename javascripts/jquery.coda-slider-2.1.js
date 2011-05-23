@@ -50,6 +50,7 @@ $.fn.codaSlider = function(settings) {
 		panelContainerWidth = (settings.carousel) ? panelWidth*(panelCount+1): panelWidth*panelCount,
 		navClicks = 0, // Used if autoSlideStopWhenClicked = true
 		last = false, // Used in carousel mode
+		dynamicNavWidth = 0,
 		currentPanel, offset, dynamicTabs;
 		
 		// If we need arrows
@@ -163,7 +164,10 @@ $.fn.codaSlider = function(settings) {
 			ul.parent().css({ "width": navContainerWidth });
 			switch (settings.dynamicTabsAlign) {
 				case "center":
-					ul.css({ "width": ($("li", ul).width() + 2) * panelCount });
+					ul.children().each(function(index){
+						dynamicNavWidth += $(ul.children()[index]).outerWidth();
+					});
+					ul.css({ "width": dynamicNavWidth });
 					break;
 				case "right":
 					ul.css({ "float": "right" });
