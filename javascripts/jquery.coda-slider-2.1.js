@@ -147,14 +147,11 @@ $.fn.codaSlider = function(settings) {
 		// If we need a dynamic menu
 		if (settings.dynamicTabs) {
 			dynamicTabs = '<div class="coda-nav" id="coda-nav-' + sliderCount + '"><ul></ul></div>';
-			switch (settings.dynamicTabsPosition) {
-				case "bottom":
-					slider.parent().append(dynamicTabs);
-					break;
-				default:
-					slider.parent().prepend(dynamicTabs);
-					break;
-			};
+			if (settings.dynamicTabsPosition === "bottom") {
+				slider.parent().append(dynamicTabs);
+			} else {
+				slider.parent().prepend(dynamicTabs);
+			}
 			ul = $('#coda-nav-' + sliderCount + ' ul');
 			// Create the nav items
 			$('.panel', slider).each(function(n) {
