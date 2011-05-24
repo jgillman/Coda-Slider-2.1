@@ -240,9 +240,15 @@ $.fn.codaSlider = function(settings) {
 			var offset;
 			
 			if (navClicks == 0 || !settings.autoSlideStopWhenClicked) {
-				if (currentPanel == panelCount) {
+				if (currentPanel == panelCount && !settings.carousel) {
 					offset = 0;
 					currentPanel = 1;
+				} else if (currentPanel == panelCount && settings.carousel) {
+					last = true;
+					offset = - (panelWidth*panelCount);
+					currentPanel = 1;
+					slider.find('.panel:first-child').clone().addClass('duplicate').appendTo('.panel-container');
+					slider.siblings('.coda-nav').find('a.current').removeClass('current').parents('ul').find('a:eq(0)').addClass('current');
 				} else {
 					offset = - (panelWidth*currentPanel);
 					currentPanel += 1;
@@ -251,7 +257,12 @@ $.fn.codaSlider = function(settings) {
 				// Switch the current tab:
 				slider.siblings('.coda-nav').find('a').removeClass('current').parents('ul').find('li:eq(' + (currentPanel - 1) + ') a').addClass('current');
 				// Slide:
-				$('.panel-container', slider).stop().animate({ "marginLeft": offset }, settings.slideEaseDuration, settings.slideEaseFunction);
+				$('.panel-container', slider).stop().animate({ "marginLeft": offset }, settings.slideEaseDuration, settings.slideEaseFunction, function() {
+					if (settings.carousel && last) {
+						last = false;
+						$(this).css( "marginLeft", (panelWidth*(currentPanel-1)) ).find('.panel.duplicate').remove();
+					}
+				});
 				setTimeout(autoSlide,settings.autoSlideInterval);
 			};
 		};
